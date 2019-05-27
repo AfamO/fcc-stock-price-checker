@@ -1,59 +1,60 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Welcome to HyperDev!</title>
+    <title>Welcome to Stock Checker!</title>
     <meta name="description" content="A cool thing made with HyperDev">
     <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="./public/style.css">
   </head>
   <body>
-    <header>
-      <h1>
-        ISQA_5 - Nasdaq Stock Price Checker
+    <header class="text-center ">
+      <img class="img-responsive" src="https://d33wubrfki0l68.cloudfront.net/4ba4ee4d1ac4caf5c0c3fa44ccc8fddd5bd11222/3f5b1/img/freecodecamp-alternative.png" alt="FreeCodeCamp Logo">
+
+      <h1 class="text-center">
+        Stock Price Checker
       </h1>
     </header>
-    <div id='userstories' style='margin-left: 5%; margin-top: 5%'>
-      <h3>User Stories</h3>
-      <ol>
-        <li>Set the content security policies to only allow loading of scripts and css from your server.</li>
-        <li>I can <b>GET</b> <code>/api/stock-prices</code> with form data containing a Nasdaq <i>stock</i> ticker and recieve back an object <i>stockData</i>.</li>
-        <li>In <i>stockData</i>, I can see the <i>stock</i>(string, the ticker), <i>price</i>(decimal in string format), and <i>likes</i>(int).</li>
-        <li>I can also pass along field <i>like</i> as <b>true</b>(boolean) to have my like added to the stock(s). Only 1 like per ip should be accepted.</li>
-        <li>If I pass along 2 stocks, the return object will be an array with both stock's info but instead of <i>likes</i>, it will display <i>rel_likes</i>(the difference between the likes on both) on both.</li>
-        <li>A good way to receive current price is the following external API(replacing 'GOOG' with your stock): <code>https://finance.google.com/finance/info?q=NASDAQ%3aGOOG</code></li>
-        <li>All 5 functional tests are complete and passing.</li>
-      </ol>
-      <h3>Example usage:</h3>
-      <code>/api/stock-prices?stock=goog</code><br>
-      <code>/api/stock-prices?stock=goog&amp;like=true</code><br>
-      <code>/api/stock-prices?stock=goog&amp;stock=msft</code><br>
-      <code>/api/stock-prices?stock=goog&amp;stock=msft&amp;like=true</code><br>
-      <h3>Example return:</h3>
-      <code>{"stockData":{"stock":"GOOG","price":"786.90","likes":1}}</code><br>
-      <code>{"stockData":[{"stock":"MSFT","price":"62.30","rel_likes":-1},{"stock":"GOOG","price":"786.90","rel_likes":1}]}</code>
+
+    <div class="row container-fluid" >
+      <div class="col-xs-6">
+        <div class="well">
+          <h3>Get single stock price and total likes</h3>
+          <div id="single" >
+            <form id="testForm2" class="border">
+              <input id="leftinput" type="text" name="stock"  placeholder="Type a stock (e.g. GOOG,MSFT,FB,AAPL etc)" required=''>
+              <input id="leflike" type="checkbox" name="like" value=true> Like?<br>
+              <button onclick="document.getElementById('jsonResult').style.display='block'" type="submit">Search</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="well">
+          <h3>Get two stock prices and their relative likes</h3>
+          <div id="double" >
+            <form id="testForm" class="border">
+              <input type="text" name="stock" placeholder="Type a stock (e.g. GOOG,MSFT,FB,AAPL etc)"  required=''>
+              <input type="text" name="anotherStock" placeholder="Type a stock (e.g. GOOG,MSFT,FB,AAPL etc)"  required=''>
+              <input type="checkbox" name="like" value=true> Like both?<br>
+              <button onclick="document.getElementById('jsonResult').style.display='block'" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <hr style='margin: 50px'>
-    <div id='testui' style='margin-left: 5%'>
-      <h2 style="text-align: left">Front-End:</h2>
-      <h3>Get single price and total likes</h3>
-      <form id="testForm2" class="border">
-        <input type="text" name="stock" placeholder="goog" style="width: 100px" required=''>
-        <input type="checkbox" name="like" value=true> Like?<br>
-        <button type="submit">Get Price!</button>
-      </form>
-      <h3>Compare and get relative likes</h3>
-      <form id="testForm" class="border">
-        <input type="text" name="stock" placeholder="goog" style="width: 100px" required=''>
-        <input type="text" name="stock" placeholder="msft" style="width: 100px" required=''>
-        <input type="checkbox" name="like" value=true> Like both?<br>
-        <button type="submit">Get Price!</button>
-      </form>
-      <code id='jsonResult'></code>
-    </div>
-    <hr style='margin: 50px; margin-top: 200px'>
+      <div class="formFlex">
+
+      </div>
+      <div id='testui' >
+
+
+      </div>
+    <div id='jsonResult'>Waiting and Loading data.....</div>
     <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
@@ -67,6 +68,7 @@
             data: $('#testForm').serialize(),
             success: function(data) {
               $('#jsonResult').text(JSON.stringify(data));
+
             }
           });
           e.preventDefault();
@@ -84,5 +86,11 @@
         });
       });
    </script>
+    <footer id="footer" class="container-fluid">
+      <p class="mt-2 mb-0">Data provided for free by <a href="https://iextrading.com/developer">IEX</a>. <a href="https://iextrading.com/api-exhibit-a/">View IEX’s Terms of Use</a>.</p>
+      <p>qlip © 2019. All Rights Reserved
+        By <a href="https://ng.linkedin.com/in/okonkwo-afam-14103b84">AfamO</a>
+      </p>
+    </footer>
   </body>
 </html>
